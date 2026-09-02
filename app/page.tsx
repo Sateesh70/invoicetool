@@ -127,111 +127,131 @@ export default function InvoiceApp() {
   if (!isClient) return null;
 
   return (
-    <main className="min-h-screen bg-zinc-50 p-6 md:p-12 text-zinc-800">
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-sm border border-zinc-200 p-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 border-b pb-6">
+    <main style={{ padding: "20px" }}>
+      <div className="container">
+        <div className="header">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Quick Invoice Maker</h1>
-            <p className="text-sm text-zinc-500">Free, fast client-side PDF billing</p>
+            <h1 className="title">Quick Invoice Maker</h1>
+            <p className="subtitle">Free, fast client-side PDF billing tool</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="actions">
             <select
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
-              className="border rounded-lg px-3 py-2 text-sm bg-zinc-50 font-medium"
+              className="select"
             >
               <option value="₹">₹ INR</option>
               <option value="$">$ USD</option>
               <option value="€">€ EUR</option>
               <option value="£">£ GBP</option>
             </select>
-            <button
-              onClick={handleDownload}
-              className="flex items-center gap-2 bg-zinc-900 text-white px-5 py-2.5 rounded-lg hover:bg-zinc-800 transition font-medium text-sm shadow-sm"
-            >
+            <button onClick={handleDownload} className="btn-primary">
               <Download size={16} /> Download PDF
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div>
-            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">Your Details (Sender)</label>
-            <input type="text" value={sender} onChange={(e) => setSender(e.target.value)} className="w-full border rounded-md p-2 text-sm" />
+        <div className="grid-2">
+          <div className="form-group">
+            <label>Your Details (Sender)</label>
+            <input
+              type="text"
+              value={sender}
+              onChange={(e) => setSender(e.target.value)}
+              className="input"
+            />
           </div>
-          <div>
-            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">Invoice #</label>
-            <input type="text" value={invoiceNumber} onChange={(e) => setInvoiceNumber(e.target.value)} className="w-full border rounded-md p-2 text-sm" />
+          <div className="form-group">
+            <label>Invoice #</label>
+            <input
+              type="text"
+              value={invoiceNumber}
+              onChange={(e) => setInvoiceNumber(e.target.value)}
+              className="input"
+            />
           </div>
-          <div className="md:col-span-2">
-            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-1">Bill To (Client)</label>
-            <input type="text" value={client} onChange={(e) => setClient(e.target.value)} className="w-full border rounded-md p-2 text-sm" />
+          <div className="form-group full-width">
+            <label>Bill To (Client)</label>
+            <input
+              type="text"
+              value={client}
+              onChange={(e) => setClient(e.target.value)}
+              className="input"
+            />
           </div>
         </div>
 
-        <div className="mb-6">
-          <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-2">Line Items</label>
-          <div className="space-y-3">
-            {items.map((item) => (
-              <div key={item.id} className="flex gap-2 items-center">
-                <input
-                  type="text"
-                  placeholder="Item / Service description"
-                  value={item.description}
-                  onChange={(e) => updateItem(item.id, "description", e.target.value)}
-                  className="flex-1 border rounded-md p-2 text-sm"
-                />
-                <input
-                  type="number"
-                  placeholder="Qty"
-                  value={item.quantity}
-                  onChange={(e) => updateItem(item.id, "quantity", Number(e.target.value))}
-                  className="w-20 border rounded-md p-2 text-sm text-center"
-                />
-                <input
-                  type="number"
-                  placeholder="Rate"
-                  value={item.rate}
-                  onChange={(e) => updateItem(item.id, "rate", Number(e.target.value))}
-                  className="w-28 border rounded-md p-2 text-sm text-right"
-                />
-                <button
-                  onClick={() => removeItem(item.id)}
-                  disabled={items.length === 1}
-                  className="p-2 text-zinc-400 hover:text-red-500 disabled:opacity-30"
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
-            ))}
+        <div style={{ marginBottom: "20px" }}>
+          <div className="form-group">
+            <label>Line Items</label>
           </div>
-          <button
-            onClick={addItem}
-            className="mt-3 flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
-          >
+          {items.map((item) => (
+            <div key={item.id} className="line-item-row">
+              <input
+                type="text"
+                placeholder="Item / Service description"
+                value={item.description}
+                onChange={(e) => updateItem(item.id, "description", e.target.value)}
+                className="input"
+                style={{ flex: 1 }}
+              />
+              <input
+                type="number"
+                placeholder="Qty"
+                value={item.quantity}
+                onChange={(e) => updateItem(item.id, "quantity", Number(e.target.value))}
+                className="input"
+                style={{ width: "70px", textAlign: "center" }}
+              />
+              <input
+                type="number"
+                placeholder="Rate"
+                value={item.rate}
+                onChange={(e) => updateItem(item.id, "rate", Number(e.target.value))}
+                className="input"
+                style={{ width: "100px", textAlign: "right" }}
+              />
+              <button
+                onClick={() => removeItem(item.id)}
+                disabled={items.length === 1}
+                className="btn-delete"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          ))}
+          <button onClick={addItem} className="btn-add">
             <Plus size={16} /> Add Item
           </button>
         </div>
 
-        <div className="border-t pt-6 flex flex-col items-end gap-2 text-sm">
-          <div className="flex justify-between w-64 text-zinc-600">
+        <div className="totals-section">
+          <div className="total-row">
             <span>Subtotal:</span>
             <span>{currency}{subtotal.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between items-center w-64 text-zinc-600">
+          <div className="total-row" style={{ alignItems: "center" }}>
             <span>Tax Rate (%):</span>
             <input
               type="number"
               value={taxRate}
               onChange={(e) => setTaxRate(Number(e.target.value))}
-              className="w-16 border rounded p-1 text-right text-sm"
+              className="input"
+              style={{ width: "70px", textAlign: "right", padding: "4px 8px" }}
             />
           </div>
-          <div className="flex justify-between w-64 text-base font-bold text-zinc-900 border-t pt-2 mt-1">
+          <div className="total-row grand-total">
             <span>Grand Total:</span>
             <span>{currency}{total.toFixed(2)}</span>
           </div>
         </div>
+      </div>
+
+      <div className="info-guide">
+        <h2>How to Issue a Professional Freelance Invoice</h2>
+        <p>
+          A compliant invoice clearly states the seller&apos;s business details, client recipient, a sequential invoice tracking number, itemized rates, and regional tax deductions (such as GST or VAT).
+        </p>
       </div>
     </main>
   );

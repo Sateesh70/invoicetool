@@ -56,10 +56,6 @@ body {
   outline: none;
 }
 
-.select:focus, .input:focus {
-  border-color: #18181b;
-}
-
 .btn-primary {
   background-color: #18181b;
   color: #ffffff;
@@ -72,10 +68,6 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.btn-primary:hover {
-  background-color: #27272a;
 }
 
 .grid-2 {
@@ -116,12 +108,6 @@ body {
   color: #a1a1aa;
   cursor: pointer;
   padding: 6px;
-  display: flex;
-  align-items: center;
-}
-
-.btn-delete:hover {
-  color: #ef4444;
 }
 
 .btn-add {

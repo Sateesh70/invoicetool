@@ -105,6 +105,68 @@ export default function StudioInvoiceApp() {
   useEffect(() => {
     setIsClient(true);
   }, []);
+  // 1. Load saved draft on initial render
+useEffect(() => {
+  try {
+    const saved = localStorage.getItem("swift_invoice_draft");
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.senderName) setSenderName(data.senderName);
+      if (data.senderDetails) setSenderDetails(data.senderDetails);
+      if (data.clientName) setClientName(data.clientName);
+      if (data.clientDetails) setClientDetails(data.clientDetails);
+      if (data.invoiceNumber) setInvoiceNumber(data.invoiceNumber);
+      if (data.items) setItems(data.items);
+      if (data.paymentTerms) setPaymentTerms(data.paymentTerms);
+      if (data.currency) setCurrency(data.currency);
+      if (data.taxRate !== undefined) setTaxRate(data.taxRate);
+      if (data.discount !== undefined) setDiscount(data.discount);
+      if (data.selectedTemplate) setSelectedTemplate(data.selectedTemplate);
+    }
+  } catch (err) {
+    console.error("Failed to load invoice draft:", err);
+  }
+}, []);
+
+// 2. Persist state changes to localStorage
+useEffect(() => {
+  if (!isClient) return;
+  const draft = {
+    senderName,
+    senderDetails,
+    clientName,
+    clientDetails,
+    invoiceNumber,
+    items,
+    paymentTerms,
+    currency,
+    taxRate,
+    discount,
+    selectedTemplate,
+  };
+  localStorage.setItem("swift_invoice_draft", JSON.stringify(draft));
+}, [
+  isClient,
+  senderName,
+  senderDetails,
+  clientName,
+  clientDetails,
+  invoiceNumber,
+  items,
+  paymentTerms,
+  currency,
+  taxRate,
+  discount,
+  selectedTemplate,
+]);
+
+// 3. Reset helper to wipe saved draft
+const handleReset = () => {
+  if (window.confirm("Are you sure you want to reset this invoice to a clean template?")) {
+    localStorage.removeItem("swift_invoice_draft");
+    window.location.reload();
+  }
+};
 
   const theme = TEMPLATES[selectedTemplate];
 

@@ -5,7 +5,7 @@ import "./globals.css";
 import { 
   Plus, Trash2, Download, Upload, 
   Sparkles, ShieldCheck, FileText, CheckCircle2, 
-  LayoutTemplate, X, PenTool, ArrowRight
+  LayoutTemplate, X, PenTool, ArrowRight, HelpCircle
 } from "lucide-react";
 import { Document, Page, Text, View, StyleSheet, Image as PDFImage, pdf } from "@react-pdf/renderer";
 
@@ -105,33 +105,49 @@ export default function StudioInvoiceApp() {
   useEffect(() => {
     setIsClient(true);
   }, []);
-  // 1. Load saved draft on initial render
-useEffect(() => {
-  try {
-    const saved = localStorage.getItem("swift_invoice_draft");
-    if (saved) {
-      const data = JSON.parse(saved);
-      if (data.senderName) setSenderName(data.senderName);
-      if (data.senderDetails) setSenderDetails(data.senderDetails);
-      if (data.clientName) setClientName(data.clientName);
-      if (data.clientDetails) setClientDetails(data.clientDetails);
-      if (data.invoiceNumber) setInvoiceNumber(data.invoiceNumber);
-      if (data.items) setItems(data.items);
-      if (data.paymentTerms) setPaymentTerms(data.paymentTerms);
-      if (data.currency) setCurrency(data.currency);
-      if (data.taxRate !== undefined) setTaxRate(data.taxRate);
-      if (data.discount !== undefined) setDiscount(data.discount);
-      if (data.selectedTemplate) setSelectedTemplate(data.selectedTemplate);
-    }
-  } catch (err) {
-    console.error("Failed to load invoice draft:", err);
-  }
-}, []);
 
-// 2. Persist state changes to localStorage
-useEffect(() => {
-  if (!isClient) return;
-  const draft = {
+  // 1. Load saved draft on initial render
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("swift_invoice_draft");
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data.senderName) setSenderName(data.senderName);
+        if (data.senderDetails) setSenderDetails(data.senderDetails);
+        if (data.clientName) setClientName(data.clientName);
+        if (data.clientDetails) setClientDetails(data.clientDetails);
+        if (data.invoiceNumber) setInvoiceNumber(data.invoiceNumber);
+        if (data.items) setItems(data.items);
+        if (data.paymentTerms) setPaymentTerms(data.paymentTerms);
+        if (data.currency) setCurrency(data.currency);
+        if (data.taxRate !== undefined) setTaxRate(data.taxRate);
+        if (data.discount !== undefined) setDiscount(data.discount);
+        if (data.selectedTemplate) setSelectedTemplate(data.selectedTemplate);
+      }
+    } catch (err) {
+      console.error("Failed to load invoice draft:", err);
+    }
+  }, []);
+
+  // 2. Persist state changes to localStorage
+  useEffect(() => {
+    if (!isClient) return;
+    const draft = {
+      senderName,
+      senderDetails,
+      clientName,
+      clientDetails,
+      invoiceNumber,
+      items,
+      paymentTerms,
+      currency,
+      taxRate,
+      discount,
+      selectedTemplate,
+    };
+    localStorage.setItem("swift_invoice_draft", JSON.stringify(draft));
+  }, [
+    isClient,
     senderName,
     senderDetails,
     clientName,
@@ -143,30 +159,7 @@ useEffect(() => {
     taxRate,
     discount,
     selectedTemplate,
-  };
-  localStorage.setItem("swift_invoice_draft", JSON.stringify(draft));
-}, [
-  isClient,
-  senderName,
-  senderDetails,
-  clientName,
-  clientDetails,
-  invoiceNumber,
-  items,
-  paymentTerms,
-  currency,
-  taxRate,
-  discount,
-  selectedTemplate,
-]);
-
-// 3. Reset helper to wipe saved draft
-const handleReset = () => {
-  if (window.confirm("Are you sure you want to reset this invoice to a clean template?")) {
-    localStorage.removeItem("swift_invoice_draft");
-    window.location.reload();
-  }
-};
+  ]);
 
   const theme = TEMPLATES[selectedTemplate];
 
@@ -670,6 +663,92 @@ const handleReset = () => {
                 <span>Grand Total Due</span>
                 <span>{currency}{grandTotal.toFixed(2)}</span>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SEO Informational & 3-Step Guide Section */}
+      <section className="max-w-5xl mx-auto mt-16 px-4 py-8">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-100">
+            How to Generate an Invoice Online in 3 Easy Steps
+          </h2>
+          <p className="mt-3 text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+            Swift Invoice Studio helps freelancers, contractors, and small business owners create clean, compliant, and professional invoices in seconds without signing up.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-slate-900/60 p-6 rounded-xl border border-slate-800 text-center">
+            <div className="w-10 h-10 mx-auto mb-4 flex items-center justify-center rounded-full bg-blue-500/10 text-blue-400 font-bold text-base border border-blue-500/20">
+              1
+            </div>
+            <h3 className="text-base font-semibold text-slate-200 mb-2">
+              Enter Business & Client Details
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Add your business name, logo, contact info, and tax IDs alongside your client’s billing address, issue date, and payment due date.
+            </p>
+          </div>
+
+          <div className="bg-slate-900/60 p-6 rounded-xl border border-slate-800 text-center">
+            <div className="w-10 h-10 mx-auto mb-4 flex items-center justify-center rounded-full bg-blue-500/10 text-blue-400 font-bold text-base border border-blue-500/20">
+              2
+            </div>
+            <h3 className="text-base font-semibold text-slate-200 mb-2">
+              Add Items, Rates & Taxes
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              List all deliverables, billable hours, rates, discounts, and regional taxes (GST/VAT). Calculations and summaries compute automatically.
+            </p>
+          </div>
+
+          <div className="bg-slate-900/60 p-6 rounded-xl border border-slate-800 text-center">
+            <div className="w-10 h-10 mx-auto mb-4 flex items-center justify-center rounded-full bg-blue-500/10 text-blue-400 font-bold text-base border border-blue-500/20">
+              3
+            </div>
+            <h3 className="text-base font-semibold text-slate-200 mb-2">
+              Export Clean Vector PDF
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              Select one of our curated design templates and click "Export Vector PDF" to get a crisp, print-ready document to send to your client.
+            </p>
+          </div>
+        </div>
+
+        {/* Search Engine Content & FAQ */}
+        <div className="mt-12 bg-slate-900/40 rounded-xl p-6 sm:p-8 border border-slate-800">
+          <div className="flex items-center gap-2 mb-6">
+            <HelpCircle size={20} className="text-blue-400" />
+            <h3 className="text-lg font-bold text-slate-100">
+              Frequently Asked Questions
+            </h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div>
+              <h4 className="font-semibold text-slate-200 mb-1">Is Swift Invoice completely free to use?</h4>
+              <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                Yes, 100% free. There are no subscription paywalls, download limits, or forced watermarks on your generated PDF invoices.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-200 mb-1">Are my client details saved on your servers?</h4>
+              <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                No. Swift Invoice operates with zero-knowledge client-side encryption. All draft records are preserved strictly in your local device storage.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-200 mb-1">Can I customize the currency and tax structure?</h4>
+              <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                Yes, you can toggle between major currencies (USD, INR, EUR, GBP, etc.) and specify custom tax rates like GST, VAT, or local sales taxes.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-200 mb-1">Does this support digital signatures?</h4>
+              <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                Yes, you can authorize each invoice with a custom digital signature block directly above the settlement details before exporting.
+              </p>
             </div>
           </div>
         </div>

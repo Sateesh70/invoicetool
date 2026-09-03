@@ -1,47 +1,24 @@
 import type { Metadata } from "next";
-import Script from "next/script";
-import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://swiftinvoiceapp.com"),
-  title: {
-    default: "SwiftInvoice Studio – Free Private Client-Side Invoice Maker",
-    template: "%s | SwiftInvoice Studio",
-  },
+  title: "Swift Invoice | Free Online Invoice Generator",
   description:
-    "Generate professional vector PDF invoices instantly. 100% private, zero-knowledge, and client-side with no sign-up or server tracking.",
+    "Create and download professional invoices, estimates, and receipts in seconds. Simple, fast, and completely free online invoicing tool.",
   keywords: [
     "invoice generator",
     "free invoice maker",
-    "freelance invoice template",
-    "client-side invoice",
-    "private pdf invoice",
-    "zero knowledge billing",
+    "create invoice online",
+    "swift invoice",
+    "receipt maker",
   ],
-  authors: [{ name: "SwiftInvoice Studio" }],
-  creator: "SwiftInvoice Studio",
   openGraph: {
-    type: "website",
-    locale: "en_US",
+    title: "Swift Invoice | Free Online Invoice Generator",
+    description:
+      "Create and download professional invoices in seconds with Swift Invoice.",
     url: "https://swiftinvoiceapp.com",
-    siteName: "SwiftInvoice Studio",
-    title: "SwiftInvoice Studio – Free Private Invoice Generator",
-    description:
-      "Generate clean vector PDF invoices straight from your browser. 100% private, zero database storage, instant export.",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "SwiftInvoice Studio – Private Client-Side Invoice Generator",
-    description:
-      "Free, clean, vector PDF invoices generated directly in your browser with zero data tracking.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-    },
+    siteName: "Swift Invoice",
+    locale: "en_US",
+    type: "website",
   },
 };
 

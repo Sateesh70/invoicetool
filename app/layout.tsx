@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Script from "next/script";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Swift Invoice | Free Online Invoice Generator",
@@ -30,6 +32,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Tailwind CSS CDN script */}
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        {/* Google AdSense script */}
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6682141621893299"

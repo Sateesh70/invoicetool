@@ -1,4 +1,15 @@
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@media print {
+  body {
+    background: #ffffff !important;
+  }
+  button {
+    display: none !important;
+  }
+  input, textarea {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    resize: none !important;
+  }
+}

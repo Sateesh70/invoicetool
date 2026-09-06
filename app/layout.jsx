@@ -1,59 +1,44 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
-
-export const metadata: Metadata = {
+export const metadata = {
   metadataBase: new URL("https://swiftinvoiceapp.com"),
   title: {
-    default: "Swift Invoice | Free Online Invoice Generator",
+    default: "Swift Invoice - Free Online GST & International Invoice Generator",
     template: "%s | Swift Invoice",
   },
   description:
-    "Create and download professional invoices, estimates, and receipts in seconds. Simple, fast, and completely free online invoicing tool.",
+    "Create and download professional GST and tax invoices instantly for free. No login required, multi-currency support, and clean PDF export.",
   keywords: [
     "invoice generator",
     "free invoice maker",
-    "create invoice online",
-    "swift invoice",
-    "receipt maker",
-    "download invoice pdf",
+    "GST invoice online",
+    "instant invoice PDF",
   ],
-  alternates: {
-    canonical: "https://swiftinvoiceapp.com",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
   openGraph: {
-    title: "Swift Invoice | Free Online Invoice Generator",
+    title: "Swift Invoice - Free Online GST & International Invoice Generator",
     description:
-      "Create and download professional invoices in seconds with Swift Invoice.",
+      "Generate clean, professional invoices in seconds with instant PDF download.",
     url: "https://swiftinvoiceapp.com",
     siteName: "Swift Invoice",
     locale: "en_US",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Swift Invoice | Free Online Invoice Generator",
-    description:
-      "Create and download professional invoices in seconds with Swift Invoice.",
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",

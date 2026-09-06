@@ -488,7 +488,7 @@ export default function StudioInvoiceApp() {
             </div>
 
             <div className="doc-meta">
-              <h1 className="doc-title" style={{ color: theme.primary }}>INVOICE</h1>
+              <h1 className="doc-title" style={{ color: theme.primary }}><h1>Instant Online Invoice Generator</h1></h1>
               <input
                 type="text"
                 value={invoiceNumber}

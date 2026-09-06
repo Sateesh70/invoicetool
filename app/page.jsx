@@ -533,7 +533,7 @@ export default function StudioInvoiceApp() {
                 value={senderDetails}
                 onChange={(e) => setSenderDetails(e.target.value)}
                 className="input-control area-control"
-                placeholder="Street Address, City, Tax ID, Support Email"
+                
               />
             </div>
 
@@ -545,14 +545,14 @@ export default function StudioInvoiceApp() {
                 onChange={(e) => setClientName(e.target.value)}
                 className="input-control"
                 style={{ fontWeight: "700", marginBottom: "6px" }}
-                placeholder="Client Business Name"
+               
               />
               <textarea
                 rows={3}
                 value={clientDetails}
                 onChange={(e) => setClientDetails(e.target.value)}
                 className="input-control area-control"
-                placeholder="Client Office Address, Tax ID, Accounts Contact"
+                
               />
             </div>
           </div>
@@ -573,7 +573,6 @@ export default function StudioInvoiceApp() {
                   value={item.description}
                   onChange={(e) => updateItem(item.id, "description", e.target.value)}
                   className="input-control"
-                  placeholder="Deliverable description or milestone"
                   style={{ flex: 4 }}
                 />
                 <input
@@ -612,7 +611,6 @@ export default function StudioInvoiceApp() {
                 value={paymentTerms}
                 onChange={(e) => setPaymentTerms(e.target.value)}
                 className="input-control area-control"
-                placeholder="Add wire coordinates, SWIFT code, UPI ID, or Net 15 conditions."
               />
 
               <div style={{ marginTop: "16px" }}>

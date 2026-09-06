@@ -67,17 +67,10 @@ const TEMPLATES = {
   },
 };
 
-interface LineItem {
-  id: string;
-  description: string;
-  quantity: number;
-  rate: number;
-}
-
 export default function StudioInvoiceApp() {
-  const [selectedTemplate, setSelectedTemplate] = useState<keyof typeof TEMPLATES>("editorial");
+  const [selectedTemplate, setSelectedTemplate] = useState("editorial");
   const [showGallery, setShowGallery] = useState(false);
-  const [logo, setLogo] = useState<string | null>(null);
+  const [logo, setLogo] = useState(null);
   const [signatureText, setSignatureText] = useState("Authorized Signatory");
   
   const [senderName, setSenderName] = useState("Vanguard Design Studio LLC");
@@ -86,7 +79,7 @@ export default function StudioInvoiceApp() {
   const [clientDetails, setClientDetails] = useState("100 Montgomery St, Suite 2100\nSan Francisco, CA 94104\nAttn: Accounts Payable");
   
   const [invoiceNumber, setInvoiceNumber] = useState("INV-2026-8801");
-  const [status, setStatus] = useState<"PENDING" | "PAID" | "OVERDUE" | "DRAFT">("PENDING");
+  const [status, setStatus] = useState("PENDING");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().split("T")[0]);
   const [dueDate, setDueDate] = useState(new Date(Date.now() + 14 * 86400000).toISOString().split("T")[0]);
   const [currency, setCurrency] = useState("$");
@@ -94,13 +87,13 @@ export default function StudioInvoiceApp() {
   const [discount, setDiscount] = useState(0);
   
   const [paymentTerms, setPaymentTerms] = useState("Payment due within 14 days of invoice issue via direct bank transfer.\nAccount: **** 8829 | Routing: 021000021 | Swift: CHASUS33");
-  const [items, setItems] = useState<LineItem[]>([
+  const [items, setItems] = useState([
     { id: "1", description: "Design System Architecture & Component Tokens", quantity: 1, rate: 4500 },
     { id: "2", description: "Next.js Full-Stack Web Application Implementation", quantity: 30, rate: 160 },
   ]);
 
   const [isClient, setIsClient] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -161,7 +154,7 @@ export default function StudioInvoiceApp() {
     selectedTemplate,
   ]);
 
-  const theme = TEMPLATES[selectedTemplate];
+  const theme = TEMPLATES[selectedTemplate] || TEMPLATES.editorial;
 
   const subtotal = items.reduce((acc, curr) => acc + (curr.quantity * curr.rate), 0);
   const discountAmount = (subtotal * discount) / 100;
@@ -173,19 +166,19 @@ export default function StudioInvoiceApp() {
     setItems([...items, { id: Date.now().toString(), description: "", quantity: 1, rate: 0 }]);
   };
 
-  const removeItem = (id: string) => {
+  const removeItem = (id) => {
     setItems(items.filter((item) => item.id !== id));
   };
 
-  const updateItem = (id: string, field: keyof LineItem, val: any) => {
+  const updateItem = (id, field, val) => {
     setItems(items.map((it) => it.id === id ? { ...it, [field]: val } : it));
   };
 
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogoUpload = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => setLogo(reader.result as string);
+      reader.onloadend = () => setLogo(reader.result);
       reader.readAsDataURL(file);
     }
   };
@@ -422,7 +415,7 @@ export default function StudioInvoiceApp() {
           {Object.values(TEMPLATES).map((t) => (
             <div
               key={t.id}
-              onClick={() => setSelectedTemplate(t.id as keyof typeof TEMPLATES)}
+              onClick={() => setSelectedTemplate(t.id)}
               className={`chip ${selectedTemplate === t.id ? "active" : ""}`}
             >
               <span className="color-dot" style={{ backgroundColor: t.primary }} />
@@ -466,7 +459,7 @@ export default function StudioInvoiceApp() {
               </div>
               
               <div style={{ display: "flex", gap: "6px", marginTop: "12px" }}>
-                {(["PENDING", "PAID", "OVERDUE", "DRAFT"] as const).map((s) => (
+                {["PENDING", "PAID", "OVERDUE", "DRAFT"].map((s) => (
                   <button
                     key={s}
                     onClick={() => setStatus(s)}
@@ -488,7 +481,6 @@ export default function StudioInvoiceApp() {
             </div>
 
             <div className="doc-meta">
-              {/* Single clean H1 tag for proper SEO indexing */}
               <h1 className="doc-title" style={{ color: theme.primary }}>
                 Instant Online Invoice Generator
               </h1>
@@ -775,7 +767,7 @@ export default function StudioInvoiceApp() {
                 <div
                   key={t.id}
                   onClick={() => {
-                    setSelectedTemplate(t.id as keyof typeof TEMPLATES);
+                    setSelectedTemplate(t.id);
                     setShowGallery(false);
                   }}
                   className={`gallery-card ${selectedTemplate === t.id ? "active" : ""}`}
